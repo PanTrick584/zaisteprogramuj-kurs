@@ -1,0 +1,68 @@
+import { InferGetStaticPropsType } from 'next';
+import React from 'react'
+import { ProductListItem } from '../components/Product';
+
+export default function ProductsPage({ data }: InferGetStaticPropsType<typeof getStaticProps>) {
+
+    // czyli tutaj ^ w propsach dostanę odpowiedź z serwera która będzie tym, co zwróci mi funkcja getStaticProps na serwerze
+    // dostarczane przez Next.js
+    // tam ^ w {}; będzie data, bo to zwracam w funkcji getStaticProps ( return { props: { data } } )
+
+  return (
+    <div>
+        <ul className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5'>
+            {data.map( prod => <li key={prod.id} className="shadow-xl border-2 h-max">
+                <ProductListItem data={{
+                    id: prod.id,
+                    title: prod.title,
+                    thumbnailURL: prod.image,
+                    thumbnailAlt: prod.title
+                }} />
+            </li>)}
+        </ul>
+        
+    </div>
+  )
+}
+
+// domyslna funkcja Next.js, wykonywana przy generowaniu strony na serwerze, 
+// dane  zniej są przechowywane gdzieś w Next.js
+// i przekazywane później do renderujących się komponentów Reactowych.
+// Next.js wywala tę funkcję w procesie deploymentu i nie jest ona później dostępna,
+// wykonuje się w kontekście Node.js, runtime'a na serwerze a nie u użytkownika
+// mogą zachodzić różnice w zależnościach w komponentach
+export const getStaticProps = async () => {
+
+    // PROMISE = nie mamy kontroli nad danymi na serwerze, do których chcemy mieć dostęp
+    // nie wiemy czy i kiedy serwer będzie mógł odpowiedzieć
+    // może być wolny albo przeciążony
+    
+    const res = await fetch('https://fakestoreapi.com/products/');
+
+    // typescript bierze dane z fetch za typ 'any' więc ja poprzez interface narzucam mu typy
+
+    const data: StoreAPI[] = await res.json();
+
+    return {
+        props: {
+            data
+        }
+    }
+
+    // fetch('https://fakestoreapi.com/products/1')
+    // .then(res=>res.json())
+    // .then(json=>console.log(json))
+};
+
+interface StoreAPI {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    category: string;
+    image: string;
+    rating: {
+        rate: number;
+        count: number;
+    };
+}

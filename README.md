@@ -34,3 +34,97 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+##### QUESTS
+
+## PAGINATION FOR SSG & SSR
+
+##### MY README
+
+#### ENVIROMENT INSTALL
+
+## SETUP NEXT.JS WITH TYPESCRIPT
+
+yarn create next-app --typescript
+
+## ENTER APP
+
+yarn dev
+
+## tsconfig
+
+strict: true
+
+## TAILWINDCSS
+
+yarn add --dev tailwindcss postcss autoprefixer
+
+## TAILWIND CONFIG FILES
+
+yarn tailwind init -p
+
+## tailwind.config.js
+
+module.exports = {
+content: [
+"./pages/**/*.{ts,tsx}",
+"./components/**/*.{ts,tsx}"
+],
+theme: {
+extend: {},
+},
+plugins: [],
+}
+
+// remember! no spacebar in {ts,tsx}, won't work
+
+## global.css
+
+styles/global.css
+
+insert:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+in \_app.tsx:
+import '../styles/globals.css'
+
+## fakestoreapi.com
+
+https://fakestoreapi.com/
+
+## SSG
+
+Static/Server Side Generating:
+
+sposób budowania strony, gdzie cały kontent jest tworzony w momencie buildowania strony
+zapytania do API również wykonywane są podczas budowania i na serwer trafia gotowa, wyrenderowania strona
+która pozostaje już taka sama
+
+## SSR
+
+Server Side Rendering:
+
+przy każdym zapytaniu użytkownika o podany adres serwer buduje stronę
+internetową, wysyła potrzebne zapytania i tak stworzoną na bieżąco stronę wysyła do uzytkownika
+
+## ISR
+
+Incremental Static Regenetation
+
+tworzy gotową stronę jak w przypadku SSG, lecz co jakiś czas wywołuje zapytanie czy dane do wyświetlenia się nie zmieniły
+
+## CSR
+
+Client Side Rendering:
+
+użytkowik wysyła zapytanie i dostaje odpowiedź w postaci niemal pustego pliku html i pliku JS
+który dopiero w przeglądarce buduje stronę i wysyła potrzebne żądania zewnętrzne (do innych serwisów czy bazy danych)
+
+## CSR API FETCH
+
+yarn add react-query
+
+biblioteka dodająca hook do requestów do API
+trzeba pamiętać o providerze na całej apce takim jak np do reduxa
