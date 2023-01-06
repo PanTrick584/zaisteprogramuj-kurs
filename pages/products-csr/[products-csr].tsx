@@ -33,7 +33,7 @@ export default function PsginationCSR() {
         setProductsMax(productsMax -5)
     }, [removeData])
 
-    const router = useRouter()    
+    // const router = useRouter()    
     
     const { isLoading, isFetching, data, error, refetch, isPreviousData } = useQuery('products', getProducts)
 
