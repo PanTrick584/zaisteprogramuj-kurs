@@ -1,12 +1,12 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { ProductDetails } from "../../components/Product";
 
 const ProductIdPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     if(!data) return <div>Coś poszło nie tak...</div>
-    const router = useRouter();
+    // const router = useRouter();
 
     console.log(data);
   return (
@@ -49,7 +49,7 @@ export const getStaticPaths = async () => {
 }
 
 
-export const getStaticProps = async ({ params }: InferGetStaticPaths<typeof getStaticPaths>) => {
+export const getStaticProps = async ({ params }: GetStaticPropsContext<{ productId: string}>) => {
 
     if (!params?.productId) return { props: {}, notFound: true }
 

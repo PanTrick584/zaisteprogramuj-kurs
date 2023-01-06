@@ -7,7 +7,7 @@ export default function About() {
     <div>
       <Header />
       <Main>
-        Hello I'm About Page
+        hi
       </Main>
       <Footer />
     </div>
