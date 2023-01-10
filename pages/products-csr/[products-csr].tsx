@@ -46,14 +46,15 @@ export default function PsginationCSR() {
             <ul className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5'>
                 {data?.map( (prod, id) =>
                      id >= productsMin && id <= productsMax && <li key={prod.id} className="shadow-xl border-2 ">
-                        <ProductDetails data={{
+                        <div></div>
+                        {/* <ProductDetails data={{
                             id: prod.id,
                             title: prod.title,
                             description: prod.description,
                             thumbnailURL: prod.image,
                             thumbnailAlt: prod.title,
                             rating: prod.rating.rate
-                        }} />
+                        }} /> */}
                     </li>
                 )}
             </ul>}
@@ -79,7 +80,7 @@ export default function PsginationCSR() {
 }
 
 interface StoreAPI {
-    id: number;
+    id: string;
     title: string;
     price: number;
     description: string;
