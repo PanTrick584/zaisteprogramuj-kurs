@@ -2,6 +2,10 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 import { ProductDetails } from "../../components/Product";
+import { serialize } from "next-mdx-remote/serialize";
+import { MarkdownResult } from "../../utils";
+import { endpoint } from "../../graphql/apolloGraphQL";
+import { gql } from "@apollo/client/core";
 
 const ProductIdPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
@@ -14,12 +18,13 @@ const ProductIdPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>)
     <div>
         <Link href="/products">Wróć na stronę główną z produktami</Link>
         <ProductDetails data={{
-                    id: data.id,
-                    title: data.title,
-                    thumbnailURL: data.image,
-                    thumbnailAlt: data.title,
+                    id: data.slug,
+                    title: data.name,
+                    thumbnailURL: data.images[0].url,
+                    thumbnailAlt: data.name,
                     description: data.description,
-                    rating: data.rating.rate
+                    rating: 5,
+                    longDescription: data.longDescription
                 }} />
     </div>
   )
@@ -32,15 +37,26 @@ export const getStaticPaths = async () => {
     // w momencie buildowania, więc nie może być ich nieskończona ilość
     // dlatego dzieki tej funkcji stworzymy potrzebne ścieżki za wczasu
 
-    const res = await fetch('https://fakestoreapi.com/products/');
+    // const res = await fetch('https://naszsklep-api.vercel.app/api/products');
 
-    const data: StoreAPI[] = await res.json();
+    // const data: StoreAPI[] = await res.json();
+
+    const { data } = await endpoint.query<StoreSlugs>({
+        query: gql`
+        query GetProductsList {
+            products {
+              slug
+            }
+          }
+          
+        `
+    })
 
     return {
-        paths: data.map( prod => {
+        paths: data.products.map( prod => {
             return {
                 params: {
-                    productId: prod.id.toString()
+                    productId: prod.slug
                 }
             }
         }),
@@ -57,16 +73,48 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext<{ product
     // PROMISE = nie mamy kontroli nad danymi na serwerze, do których chcemy mieć dostęp
     // nie wiemy czy i kiedy serwer będzie mógł odpowiedzieć
     // może być wolny albo przeciążony
+
+    // const res = await fetch(`https://naszsklep-api.vercel.app/api/products/${params?.productId}`);
+
+    // // typescript bierze dane z fetch za typ 'any' więc ja poprzez interface narzucam mu typy
+
+    // const data: StoreAPI | null = await res.json();
+
+
+    const { data } = await endpoint.query<GetStoreDatails>({
+        variables: {
+           slug:  params.productId
+        },
+        query: gql`
+        query GetProductDetails($slug: String) {
+            product(where: {slug: $slug }) {
+              slug
+              name
+              description
+              price
+              images {
+                url
+              }
+            }
+          }
+          
+        `
+    })
+
+    console.log(data);
     
-    const res = await fetch(`https://fakestoreapi.com/products/${params?.productId}`);
+    
 
-    // typescript bierze dane z fetch za typ 'any' więc ja poprzez interface narzucam mu typy
+    if (!data ) return { props: {}, notFound: true } 
 
-    const data: StoreAPI | null = await res.json();
+    const getMarkdown = await serialize(data.product.description)
 
     return {
         props: {
-            data
+            data: {
+                ...data.product,
+                longDescription: getMarkdown
+            }
         }
     }
 
@@ -75,15 +123,25 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext<{ product
     // .then(json=>console.log(json))
 };
 
-interface StoreAPI {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-    rating: {
-        rate: number;
-        count: number;
-    };
+interface StoreSlugs {
+    products: Product[]
 }
+
+interface Product {
+    slug: string;
+}
+
+interface GetStoreDatails {
+    product: Product;
+}
+    interface Product {
+        slug: string;
+        name: string;
+        description: string;
+        price: number;
+        images: Image[];
+    }
+
+    interface Image {
+        url: string;
+    }

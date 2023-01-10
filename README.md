@@ -94,6 +94,14 @@ import '../styles/globals.css'
 
 https://fakestoreapi.com/
 
+## NEXT-SEO
+
+yarn add next-seo
+
+## MDX REMOTE
+
+yarn add next-mdx-remote
+
 ## SSG
 
 Static/Server Side Generating:
@@ -128,3 +136,14 @@ yarn add react-query
 
 biblioteka dodająca hook do requestów do API
 trzeba pamiętać o providerze na całej apce takim jak np do reduxa
+
+## APOLLO FOR GRAPHQL
+
+yarn add @apollo/client graphql
+
+## GRAPHQL TYPE PACKAGE FOR TYPESCRIPT
+
+yarn add --dev @graphql-codegen/cli
+
+YARN GRAPHQL-CODEGEN INIT
+yarn graphql-codegen init

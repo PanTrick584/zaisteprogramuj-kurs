@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Link from "next/link"
+import { CartBar } from './cart/CartBar';
 
 export const Header = () => {
 
@@ -15,5 +16,7 @@ export const Header = () => {
                     About
                 </Link>
             </nav>
+            <CartBar />
+
         </header>
 }
