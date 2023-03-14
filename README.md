@@ -39,13 +39,16 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## PAGINATION FOR SSG & SSR
 
+paginacja może być częściowo generowna w SSG, żeby użytkownik miał wrażenie szybkiego działania aplikacji gdy wchodzi w produkty najbardziej popularne
+natomiat reszta może być doczytywana przez SSR na bieżąco, gdzy może tracimy trochę na samym performansie ale ogólne wrażenie jest dobre. SSG głownie do produktów mniej popularnych, żadziej wyszukiwanych
+
 ##### MY README
 
 #### ENVIROMENT INSTALL
 
 ## SETUP NEXT.JS WITH TYPESCRIPT
 
-yarn create next-app --typescript
+yarn create-next-app --typescript
 
 ## ENTER APP
 
@@ -145,5 +148,10 @@ yarn add @apollo/client graphql
 
 yarn add --dev @graphql-codegen/cli
 
-YARN GRAPHQL-CODEGEN INIT
 yarn graphql-codegen init
+
+## REACT-HOOK-FORM
+
+npm install react-hook-form
+
+## YUP FORM VALIDATION

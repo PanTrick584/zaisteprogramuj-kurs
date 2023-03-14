@@ -1,0 +1,11 @@
+
+
+export const CreateProductReview = gql`
+mutation CreateProductReview($review: ReviewCreateInput!) {
+  review: createReview(data: $review) {
+    id
+    name
+    stage
+  }
+}
+`
